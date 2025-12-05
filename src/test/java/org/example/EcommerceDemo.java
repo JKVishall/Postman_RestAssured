@@ -4,8 +4,10 @@ import EcommerceDemoRequestResponseClasses.*;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -47,7 +49,7 @@ public class EcommerceDemo {
                 .addHeader("authorization", token)
                 .build();
         RequestSpecification reqSpec = given().spec(requestSpecification)
-                .param("productName", "Laptop")
+                .param("productName", "Desktop")
                 .param("productAddedBy", userId).param("productCategory", "fashion")
                 .param("productSubCategory", "shirts").param("productPrice", "11500")
                 .param("productDescription", "Lenova").param("productFor", "men")
@@ -93,8 +95,18 @@ public class EcommerceDemo {
         System.out.println(response.asString());
     }
 
-    @Test
-    public void deleteItem(){
+    @Test(priority = 4)
+    public void deleteItemWithPathParametersInURL(){
+        RequestSpecification deleteRequestSpec = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com")
+                .addHeader("authorization", token)
+                .setContentType(ContentType.JSON)
+                .build();
 
+        RequestSpecification deleteReqSpec = given().spec(deleteRequestSpec).pathParam("productId", productId);
+
+        String deleteResponseString = deleteReqSpec.when().delete("/api/ecom/product/delete-product/{productId}").then().log().all()
+                .extract().asString();
+        JsonPath js = new JsonPath(deleteResponseString);
+        Assert.assertEquals(js.getString("message"), "Product Deleted Successfully");
     }
 }
