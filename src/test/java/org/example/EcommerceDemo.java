@@ -1,15 +1,16 @@
 package org.example;
 
-import EcommerceDemoRequestResponseClasses.AddProductResponse;
-import EcommerceDemoRequestResponseClasses.LoginRequest;
-import EcommerceDemoRequestResponseClasses.LoginResponse;
+import EcommerceDemoRequestResponseClasses.*;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -52,10 +53,48 @@ public class EcommerceDemo {
                 .param("productDescription", "Lenova").param("productFor", "men")
                 .multiPart("productImage",new File("C:\\Users\\UU489ZG\\OneDrive - EY\\Documents\\Automation\\PostMan_RestAssured\\src\\test\\Resources\\0081_RESOURCE_KeyBASkills.png"));
 
-        AddProductResponse addProductResponse = reqSpec.when().post("/api/ecom/product/add-product")
-                .then().extract().response().as(AddProductResponse.class);
+        //Unlike the 1st test case where we directly extract this api call as customclass(AddProductResponse.class) object,
+        //here we extract it as Response first inorder to validate the status code
+        //then we are converting the response again to customclass object
+        Response response = reqSpec.when().post("/api/ecom/product/add-product")
+                .then().extract().response();
+        int statusCode = response.getStatusCode();
+        System.out.println(statusCode);
+        AddProductResponse addProductResponse = response.as(AddProductResponse.class);
+
         productId = addProductResponse.getProductId();
         System.out.println("Product ID: " + productId);
+
+    }
+
+    @Test
+    public void postWithHTTPSRelaxed(){
+        //We are ordering the product here
+       RequestSpecification requestSpecification = new RequestSpecBuilder().setBaseUri("https://rahulshettyacademy.com")
+               .addHeader("authorization", token)
+               .setContentType(ContentType.JSON)
+               .build();
+
+        CreateOrderDetailsPartTwo orderDetail = new CreateOrderDetailsPartTwo();
+        orderDetail.setCountry("India");
+        orderDetail.setProductOrderedId(productId);
+
+        List<CreateOrderDetailsPartTwo> orderDetailList = new ArrayList<>();
+        orderDetailList.add(orderDetail);
+
+        CreateOrderRequest crd = new CreateOrderRequest();
+        crd.setOrders(orderDetailList);
+
+        RequestSpecification reqSpec = given().relaxedHTTPSValidation().spec(requestSpecification).body(crd);
+
+        Response response = reqSpec.when().post("/api/ecom/order/create-order").then().extract().response();
+        System.out.println(response.getStatusCode());
+
+        System.out.println(response.asString());
+    }
+
+    @Test
+    public void deleteItem(){
 
     }
 }
