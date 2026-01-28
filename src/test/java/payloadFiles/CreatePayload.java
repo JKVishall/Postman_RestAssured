@@ -1,7 +1,7 @@
 package payloadFiles;
 
 //Post (Create) actions payload
-public class createPayload {
+public class CreatePayload {
     public static String postPayload(){
         return "{\n" +
                 "  \"location\": {\n" +

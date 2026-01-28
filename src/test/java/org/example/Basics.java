@@ -1,10 +1,9 @@
 package org.example;
 
 import io.restassured.RestAssured;
-import io.restassured.path.json.JsonPath;
 import org.testng.Assert;
 import payloadFiles.ReusableMethods;
-import payloadFiles.createPayload;
+import payloadFiles.CreatePayload;
 import  static org.hamcrest.Matchers.*;
 
 import static io.restassured.RestAssured.*;
@@ -24,12 +23,13 @@ public class Basics extends ReusableMethods {
         //POST
         //header-application/json must be given if our body is going to be of json type
         String postResponse = given().log().all().queryParam("key","qaclick123").header("Content-Type","application/json")
-                .body(createPayload.postPayload())
+                .body(CreatePayload.postPayload())
                 .when().post("maps/api/place/add/json")
                 .then().log().all().assertThat().statusCode(200).body("scope",equalTo("APP")).header("Server", equalTo("Apache/2.4.52 (Ubuntu)"))
                 .extract().response().asString();
 
         //Since the main method is static, we need to make the reusable method static as wel
+        System.out.println("post response: "+postResponse);
         String placeID = ReusableMethods.rawToJsonAndGetString(postResponse, "place_id");
         System.out.println("\n Result of POST operation is giving placeID as: "+placeID);
 
@@ -37,7 +37,7 @@ public class Basics extends ReusableMethods {
         //PUT
         String newAddress = "John Mason Street, India";
         String putResponse = given().queryParam("key", "qaclick123").header("Content-Type", "application/json")
-                .body(createPayload.putPayload(placeID, newAddress))
+                .body(CreatePayload.putPayload(placeID, newAddress))
                 .when().put("maps/api/place/update/json")
                 .then().assertThat().body("msg", equalTo("Address successfully updated"))
                 .extract().response().asString();

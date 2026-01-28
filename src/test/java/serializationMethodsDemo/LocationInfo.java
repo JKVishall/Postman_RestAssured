@@ -1,6 +1,6 @@
 package serializationMethodsDemo;
 
-public class locationInfo {
+public class LocationInfo {
     private double latitude;
     private double longitude;
 

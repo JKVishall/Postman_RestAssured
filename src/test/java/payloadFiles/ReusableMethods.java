@@ -1,11 +1,5 @@
 package payloadFiles;
-import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
-import org.testng.Assert;
-import payloadFiles.createPayload;
-import  static org.hamcrest.Matchers.*;
-
-import static io.restassured.RestAssured.*;
 
 public class ReusableMethods {
     public static String rawToJsonAndGetString(String Response, String requiredValue){

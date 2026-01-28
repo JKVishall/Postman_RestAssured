@@ -4,14 +4,14 @@ import io.restassured.path.json.JsonPath;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import payloadFiles.ReusableMethods;
-import payloadFiles.createPayload;
+import payloadFiles.CreatePayload;
 
 public class ComplexDemo extends ReusableMethods {
 
     @Test
     public static void complexDemoTestCases(){
 
-        JsonPath jj = new JsonPath(createPayload.payloadForComplexDemo());
+        JsonPath jj = new JsonPath(CreatePayload.payloadForComplexDemo());
 
         //TC01: Print No of courses returned by API
         int numOfCourses = jj.getInt("courses.size()");

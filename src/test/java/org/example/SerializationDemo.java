@@ -3,8 +3,8 @@ package org.example;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
-import serializationMethodsDemo.locationInfo;
-import serializationMethodsDemo.websiteDetails;
+import serializationMethodsDemo.LocationInfo;
+import serializationMethodsDemo.WebsiteDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class SerializationDemo {
 
     @Test
     public void serializationDemo(){
-        websiteDetails bodyData = new websiteDetails();
+        WebsiteDetails bodyData = new WebsiteDetails();
         bodyData.setAccuracy(50);
         bodyData.setName("Frontline house");
         bodyData.setPhoneNumber("(+91) 983 893 3937");
@@ -31,7 +31,7 @@ public class SerializationDemo {
 
         //since setLocation expects an object to be sent in it (locationInfo class object)
         //we need to create an object of locationInfo class and then send it inside setLocation
-        locationInfo ll = new locationInfo();
+        LocationInfo ll = new LocationInfo();
         ll.setLatitude(-38.383494);
         ll.setLongitude(33.427362);
 

@@ -2,8 +2,8 @@ package serializationMethodsDemo;
 
 import java.util.List;
 
-public class websiteDetails {
-    private locationInfo location;
+public class WebsiteDetails {
+    private LocationInfo location;
 
     private int accuracy;
     private String name;
@@ -15,11 +15,11 @@ public class websiteDetails {
     private String website;
     private String language;
 
-    public locationInfo getLocation() {
+    public LocationInfo getLocation() {
         return location;
     }
 
-    public void setLocation(locationInfo location) {
+    public void setLocation(LocationInfo location) {
         this.location = location;
     }
 

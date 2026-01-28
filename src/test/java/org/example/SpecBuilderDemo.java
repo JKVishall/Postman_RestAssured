@@ -8,19 +8,19 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.Test;
-import serializationMethodsDemo.locationInfo;
-import serializationMethodsDemo.websiteDetails;
+import serializationMethodsDemo.LocationInfo;
+import serializationMethodsDemo.WebsiteDetails;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
-public class specBuilderDemo {
+public class SpecBuilderDemo {
 
     @Test
     public void serializationDemo(){
-        websiteDetails bodyData = new websiteDetails();
+        WebsiteDetails bodyData = new WebsiteDetails();
         bodyData.setAccuracy(50);
         bodyData.setName("Frontline house");
         bodyData.setPhoneNumber("(+91) 983 893 3937");
@@ -36,7 +36,7 @@ public class specBuilderDemo {
 
         //since setLocation expects an object to be sent in it (locationInfo class object)
         //we need to create an object of locationInfo class and then send it inside setLocation
-        locationInfo ll = new locationInfo();
+        LocationInfo ll = new LocationInfo();
         ll.setLatitude(-38.383494);
         ll.setLongitude(33.427362);
 
@@ -48,6 +48,7 @@ public class specBuilderDemo {
         //This will include the baseURI and all other things we give in given() except .body
         //we need to create a new object of RequestSpecBuilder
         //need to give .build() for it to build it to the specBuilder type
+        //given()
         RestAssured.useRelaxedHTTPSValidation();
         RequestSpecification requestSpec = new RequestSpecBuilder().setBaseUri("https://www.rahulshettyacademy.com")
                 .addQueryParam("key","qaclick123")
@@ -56,12 +57,15 @@ public class specBuilderDemo {
 
         //Doing ResponseSpecBuilder
         //This will include all the things we give on then()
+        //then()
         ResponseSpecification responseSpec = new ResponseSpecBuilder().expectStatusCode(200).expectContentType(ContentType.JSON).build();
 
 
         //Final code
+        //when()
         Response response = reqSpec.when().post("maps/api/place/add/json").then().spec(responseSpec).extract().response();
         System.out.println(response.statusCode());
+        System.out.println(response.asString());
 //        RestAssured.baseURI="https://www.rahulshettyacademy.com";
 //        RestAssured.useRelaxedHTTPSValidation();
 //        Response response = given().queryParam("key", "qaclick123")

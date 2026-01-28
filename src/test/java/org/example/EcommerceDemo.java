@@ -101,7 +101,8 @@ public class EcommerceDemo {
                 .addHeader("authorization", token)
                 .setContentType(ContentType.JSON)
                 .build();
-
+        //Path parameter is attached after the URL resource
+        //https://rahulshettyacademy.com/api/ecom/product/delete-product/{productId}
         RequestSpecification deleteReqSpec = given().spec(deleteRequestSpec).pathParam("productId", productId);
 
         String deleteResponseString = deleteReqSpec.when().delete("/api/ecom/product/delete-product/{productId}").then().log().all()
